@@ -1,0 +1,70 @@
+workspace "Name" "Description"
+
+    !identifiers hierarchical
+
+    model {
+        u = person "User"
+        ss = softwareSystem "NPU Social Platform" {
+            wa = container "Web Application"
+            ma = container "Mobile App"
+            aa = container "API Application"
+            db = container "SQL Database" {
+                tags "Database"
+            }
+            fs = container "File Storage"{
+                tags "Database"
+            }
+        }
+        as = softwareSystem "Authentication Service"{
+            tags "External"
+        }
+        ca = softwareSystem "Elements Catalogue"{
+            tags "External"
+        }
+
+        u -> ss.wa "Uploads NPU creations, scores others' creations and searches for creations by element names"
+        u -> ss.ma "Uploads NPU creations, scores others' creations and searches for creations by element names"
+        as -> u "Generates token"
+        ss.aa -> ss.db "Reads NPU creations and scores from and writes to"
+        ss.wa -> ss.aa "CRUD NPU creations, scores and searches by elements"
+        ss.ma -> ss.aa "CRUD NPU creations, scores and searches by elements"
+        ss.aa -> ss.fs "Saves image files to and gets images from"
+        ss.aa -> as "Redirects user to"
+        ss.aa -> ca "Gets elements overview from"
+    }
+
+    views {
+        systemContext ss "Diagram1" {
+            include *
+            autolayout lr
+        }
+
+        container ss "Diagram2" {
+            include *
+            autolayout lr
+        }
+
+        styles {
+            element "Element" {
+                color white
+            }
+            element "Person" {
+                background #116611
+                shape person
+            }
+            element "Software System" {
+                background #2D882D
+            }
+            element "Container" {
+                background #55aa55
+            }
+            element "Database" {
+                shape cylinder
+            }
+            element "External" {
+                background #AAAAAA
+            }
+        }
+    }
+
+}

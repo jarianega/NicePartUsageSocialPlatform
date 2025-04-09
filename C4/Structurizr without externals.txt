@@ -1,0 +1,54 @@
+workspace "Name" "Description"
+
+    !identifiers hierarchical
+
+    model {
+        u = person "User"
+        ss = softwareSystem "NPU Social Platform" {
+            wa = container "Web Application"
+            ma = container "Mobile App"
+            aa = container "API Application"
+            db = container "SQL Database" {
+                tags "Database"
+            }
+        }
+
+        u -> ss.wa "Uploads NPU creations, scores others' creations and searches for creations by element names"
+        u -> ss.ma "Uploads NPU creations, scores others' creations and searches for creations by element names"
+        ss.aa -> ss.db "Reads users, NPU creations and scores from and writes to"
+        ss.wa -> ss.aa "CRUD users, NPU creations, scores and searches by elements"
+        ss.ma -> ss.aa "CRUD users, NPU creations, scores and searches by elements"
+    }
+
+    views {
+        systemContext ss "Diagram1" {
+            include *
+            autolayout lr
+        }
+
+        container ss "Diagram2" {
+            include *
+            autolayout lr
+        }
+
+        styles {
+            element "Element" {
+                color white
+            }
+            element "Person" {
+                background #116611
+                shape person
+            }
+            element "Software System" {
+                background #2D882D
+            }
+            element "Container" {
+                background #55aa55
+            }
+            element "Database" {
+                shape cylinder
+            }
+        }
+    }
+
+}
